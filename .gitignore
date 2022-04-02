@@ -1,0 +1,8 @@
+Release/
+Debug/
+.vs/
+JSON_parser/CppProperties.json
+*.sln
+*.vcxproj
+*.filters
+*.user
