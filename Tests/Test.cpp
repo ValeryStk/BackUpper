@@ -1,4 +1,5 @@
 #include "Core/Controller.h"
+#include "Core/Configurator/Configurator.h"
 #include "gtest/gtest.h"
 TEST(Controller, launchCase) {
 	
@@ -6,6 +7,13 @@ TEST(Controller, launchCase) {
 	//Controller c2;
 	bool result = true;// (c1.getVar() == c2.getVar());
 	EXPECT_EQ(result,true);
+
+}
+
+TEST(Configurator, parsingJson) {
+
+	Configurator cfg;
+	cfg.parseConfigFile("d:/test.json");
 
 }
 

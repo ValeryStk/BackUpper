@@ -6,7 +6,7 @@ using std::cout;
 
 int main(){
 	
-	cout<<("Entry point");
+	cout<<("Entry point\n");
 	Controller core;
 	char i;
 	bool isRun = true;

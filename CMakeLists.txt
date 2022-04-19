@@ -21,6 +21,7 @@ Test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
 
 target_link_libraries(Test PRIVATE gtest_main)
 target_link_libraries(Test PRIVATE CoreLib)
+target_link_libraries(Test PRIVATE ConfiguratorLib)
 
 add_executable  (Ensety main.cpp)
 target_link_libraries(Ensety PRIVATE CoreLib)

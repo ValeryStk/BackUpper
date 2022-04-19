@@ -7,6 +7,10 @@
 #include <thread>
 #include <string>
 
+using namespace std::chrono_literals;
+using namespace std::chrono;
+using std::vector;
+
 class TimeManager
 {
 public:
@@ -14,8 +18,8 @@ public:
     TimeManager();
     void stop();
     void start();
-    void addTimes(std::vector<std::chrono::seconds> &&timeVector);
-    void delTime(std::chrono::seconds dt);
+    void addTimes(vector<seconds> &&timeVector);
+    void delTime(const seconds &dt);
 
 private:
     std::unordered_map<long long,long long> times;

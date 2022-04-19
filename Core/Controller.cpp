@@ -6,13 +6,14 @@
 Controller::Controller()
 {
 	var = 8;
-	m_timeMgr.start();
+	m_threadTimes = std::thread(&TimeManager::start, &m_timeMgr);
 	
 }
 
 Controller::~Controller()
 {
-	
+	m_timeMgr.stop();
+	m_threadTimes.detach();
 }
 
 int Controller::getVar() const

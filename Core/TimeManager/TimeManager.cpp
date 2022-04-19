@@ -1,24 +1,27 @@
 #include "TimeManager.h"
+#include "TimeManager.h"
 #include <iostream>
+using std::cout;
+using std::endl;
 
-using namespace std::chrono_literals;
+
 
 TimeManager::TimeManager()
 {
 
 
     times = {
-        {std::chrono::seconds(1min).count(),std::chrono::seconds(1min).count()},
-        {std::chrono::seconds(7s).count(),std::chrono::seconds(7s).count()},
-        {std::chrono::seconds(3min).count(),std::chrono::seconds(3min).count()},
-        {std::chrono::seconds(25s).count(),std::chrono::seconds(25s).count()},
-        {std::chrono::seconds(1min + 20s).count(),std::chrono::seconds(1min + 20s).count()}
+        {seconds(1min).count(),seconds(1min).count()},
+        {seconds(7s).count(),  seconds(7s).count()},
+        {seconds(3min).count(),seconds(3min).count()},
+        {seconds(25s).count(),seconds(25s).count()},
+        {seconds(1min + 20s).count(),seconds(1min + 20s).count()}
     };
-    std::vector<std::chrono::seconds> vt = {5s, 2h, 30min,3h+30min};
+    vector<seconds> vt = {5s, 2h, 30min,3h+30min};
     addTimes(std::move(vt));
-    std::cout<<"Time manager";
-    delTime(std::chrono::seconds(7s));
-    delTime(std::chrono::seconds(5s));
+    cout<<"Time manager"<<endl;
+    delTime(seconds(7s));
+    delTime(seconds(5s));
 
 }
 
@@ -28,21 +31,21 @@ void TimeManager::sleep()
     while(isRun){
 
         long long nearestTime = times.begin()->first;
-        for(auto it:times){
+        for(auto &it:times){
             if(nearestTime > it.second) nearestTime = it.second;
         }
-        std::cout << "Nearest time:" << nearestTime;
-        std::this_thread::sleep_for(std::chrono::seconds(nearestTime));
+        cout << "Nearest time:" << nearestTime <<endl;
+        std::this_thread::sleep_for(seconds(nearestTime));
 
         for(auto &it:times){
             times[it.first] = it.second - nearestTime;
             if(it.second == 0){
-                std::cout << "***** Timer "<<it.first<<" seconds triggered";
+                cout << "***** Timer "<<it.first<<" seconds triggered"<<endl;
                 times[it.first] = it.first;
             }
         }
-        std::cout << "--------------------------------------------\n";
-        for(auto it:times)std::cout << "Changed state for timer "<<it.first<<" -->"<<it.second;
+        cout << "--------------------------------------------\n"<<endl;
+        for(auto &it:times)cout << "Changed state for timer "<<it.first<<" -->"<<it.second<<endl;
     }
 }
 
@@ -54,23 +57,25 @@ void TimeManager::stop()
 
 void TimeManager::start()
 {
-    if(times.size()==0){
-        std::cout << "No times case: ";
-        return;}
+    if(times.size() == 0){
+        cout << "No times case: ";
+        return;
+    }
     isRun = true;
     sleep();
 }
 
-void TimeManager::addTimes(std::vector<std::chrono::seconds> &&timeVector)
+void TimeManager::addTimes(std::vector<seconds> &&timeVector)
 {
     for(auto&&it:timeVector){
-        auto timeValue = std::pair<long long,long long>(std::chrono::seconds(it).count(),std::chrono::seconds(it).count());
+        auto timeValue = std::pair<long long,long long>(seconds(it).count(),seconds(it).count());
         times.insert(timeValue);
-        std::cout << "Time value:"<<timeValue.second;
+        cout << "Time value:"<<timeValue.second<<endl;
     }
 }
 
-void TimeManager::delTime(std::chrono::seconds dt)
+
+void TimeManager::delTime(const seconds &dt)
 {
     auto it = times.find(dt.count());
     if(it != times.end())times.erase(it);
