@@ -1,5 +1,6 @@
 Release/
 Debug/
+out/
 .vs/
 JSON_parser/CppProperties.json
 *.sln
