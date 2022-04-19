@@ -11,8 +11,19 @@ add_subdirectory(FileSystem)
 add_subdirectory(GUI)
 add_subdirectory(MessageBroker)
 add_subdirectory(Tests)
-add_executable  (Ensety main.cpp)
 
+add_executable (Test Tests/Test.cpp)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+target_include_directories(
+Test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
+)
+
+target_link_libraries(Test PRIVATE gtest_main)
+target_link_libraries(Test PRIVATE CoreLib)
+
+add_executable  (Ensety main.cpp)
 target_link_libraries(Ensety PRIVATE CoreLib)
+
 
 

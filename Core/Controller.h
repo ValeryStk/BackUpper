@@ -1,5 +1,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
+#include "TimeManager/TimeManager.h"
 
 class Controller {
 
@@ -11,6 +12,7 @@ public:
 
 private:
 	int var;
+	TimeManager m_timeMgr;
 
 };
 

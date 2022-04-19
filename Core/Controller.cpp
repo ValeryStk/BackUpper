@@ -6,12 +6,13 @@
 Controller::Controller()
 {
 	var = 8;
-	std::cout << "************ Controller constructor *********************";
+	m_timeMgr.start();
+	
 }
 
 Controller::~Controller()
 {
-	std::cout << "************ Controller destructor *********************";
+	
 }
 
 int Controller::getVar() const
