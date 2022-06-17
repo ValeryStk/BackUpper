@@ -2,3 +2,4 @@
 /.vs
 /Tests/Gtest
 *.ninja
+/CMakeLists.txt.user

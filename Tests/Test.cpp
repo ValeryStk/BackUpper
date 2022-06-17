@@ -3,9 +3,8 @@
 #include "gtest/gtest.h"
 TEST(Controller, launchCase) {
 	
-	//Controller c1;
-	//Controller c2;
-	bool result = true;// (c1.getVar() == c2.getVar());
+
+    bool result = true;
 	EXPECT_EQ(result,true);
 
 }
