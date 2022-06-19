@@ -1,4 +1,3 @@
-
 project(Core)
 
 set(SOURCE_FILES

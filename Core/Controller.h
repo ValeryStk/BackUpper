@@ -10,8 +10,6 @@ class Controller {
 public:
 	Controller();
 	~Controller();
-	int getVar()const;
-	void setVar(int var);
 
 private:
 	int var;

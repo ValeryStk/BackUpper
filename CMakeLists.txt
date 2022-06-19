@@ -23,9 +23,12 @@ Test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
 target_link_libraries(Test PRIVATE gtest_main)
 target_link_libraries(Test PRIVATE CoreLib)
 target_link_libraries(Test PRIVATE ConfiguratorLib)
+target_link_libraries(Test PRIVATE FileManagerLib)
 
-add_executable  (${projectName} main.cpp)
+add_executable       (${projectName} main.cpp)
 target_link_libraries(${projectName} PRIVATE CoreLib)
+target_link_libraries(${projectName} PRIVATE FileManagerLib)
+
 
 
 
