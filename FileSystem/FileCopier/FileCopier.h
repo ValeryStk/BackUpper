@@ -20,7 +20,6 @@ using std::pair;
 using std::mutex;
 
 
-
 class FileCopier{
 public:
     FileCopier(std::string sourceDir,std::string backupDir);
@@ -36,8 +35,8 @@ private:
     atomic <uint64_t> m_copiedCounter;
     atomic <uint64_t> m_TotalSize;
     vector <pair<string,string>> m_paths;
-    string getCurrentTimeStamp();
 
+    string getCurrentTimeStamp();
     void makeBackupNames();
 
 };

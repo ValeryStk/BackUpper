@@ -127,7 +127,6 @@ string FileCopier::getCurrentTimeStamp()
 
 void FileCopier::makeBackupNames(){
 
-
     for(auto &file : fs::recursive_directory_iterator(m_inDir)) {
 
         if(!file.is_directory()){
