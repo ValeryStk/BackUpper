@@ -46,7 +46,7 @@ void Configurator::parseConfigFile(const char* filename)
     j->at("DataBase").at("ip").get_to(cfg.ip);
     j->at("DataBase").at("port").get_to(cfg.port);
 
-    for (auto& bp : backUpPathes) cout << bp << "\n";
-    cout << cfg.ip << "\n";
-    cout << cfg.port << "\n";
+    //for (auto& bp : backUpPathes) cout << bp << "\n";
+    //cout << cfg.ip << "\n";
+    //cout << cfg.port << "\n";
 }

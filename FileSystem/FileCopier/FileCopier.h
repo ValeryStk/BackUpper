@@ -11,7 +11,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
-using std::thread;
+
 using std::atomic;
 using std::string;
 using std::cout;
@@ -25,6 +25,7 @@ class FileCopier{
 public:
     FileCopier(std::string sourceDir,std::string backupDir);
     void startCopy();
+    std::string makeOutFilePath(const string &inPath);
 
 private:
     string   m_inDir;
@@ -34,8 +35,9 @@ private:
     atomic <uint64_t> m_completedFilesCounter = -1;
     atomic <uint64_t> m_copiedCounter;
     atomic <uint64_t> m_TotalSize;
-    vector<pair<string,string>> m_paths;
-    void makeOutFilePath(string &path);
+    vector <pair<string,string>> m_paths;
+    string getCurrentTimeStamp();
+
     void makeBackupNames();
 
 };

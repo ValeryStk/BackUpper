@@ -5,28 +5,22 @@
 #include "gtest/gtest.h"
 using std::string;
 
-TEST(Controller, launchCase) {
-	
-    bool result = true;
-	EXPECT_EQ(result,true);
 
+TEST(FileCopier, copyTest){
+
+    //FileCopier fc("inPath","outPath");
+    //fc.startCopy();
 }
 
-TEST(Configurator, parsingJson) {
-
-    Configurator cfg;
-    cfg.parseConfigFile("d:/test.json");
-
-}
 
 TEST(FileCopier, makeOutFilePath){
 
-    FileCopier fc("d:/_My_FIAT","d:/_out");
+    FileCopier fc("d:/_in","d:/_out");
     string path = "d:/_in/test/test2/test3";
     string expectedResult = "d:/_out/d_intesttest2test3";
     cout<<fc.makeOutFilePath(path)<<"  ++++   "<<expectedResult;
     string clearedFileName = fc.makeOutFilePath(path).substr(0,expectedResult.length());
-    fc.startCopy();
+    
     EXPECT_EQ(clearedFileName,expectedResult);
 }
 

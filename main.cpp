@@ -12,6 +12,7 @@ int main(){
     FileManager fileManager;
     char i;
     bool isRun = true;
+    core.startTimeManager();
 	cout<<("\nEnter 'q' to exit...");
     while (isRun) {
         std::cin >> i;

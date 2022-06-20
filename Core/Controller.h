@@ -10,9 +10,11 @@ class Controller {
 public:
 	Controller();
 	~Controller();
+    void startTimeManager();
+    void stopTimeManager();
 
 private:
-	int var;
+    bool isTimeManagerStarted;
 	Configurator m_configurator;
 	std::thread m_threadTimes;
 	TimeManager m_timeMgr;

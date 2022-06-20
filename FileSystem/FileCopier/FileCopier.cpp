@@ -1,8 +1,10 @@
 #include "FileCopier.h"
-
+#include <ctime>
+using std::thread;
 using std::ios;
 using std::fstream;
 using std::ostream;
+
 namespace fs = std::filesystem;
 using namespace std::chrono;
 
@@ -10,9 +12,8 @@ FileCopier::FileCopier(string sourceDir, string backupDir)
 {
     m_inDir = sourceDir;
     m_outDir = backupDir;
-    if(!fs::exists(m_inDir)) return;//EXCEPTION 1
-    if(!fs::exists(m_outDir))return;//EXCEPTION 2
-    makeBackupNames();
+    m_threadsCount = thread::hardware_concurrency();
+
 }
 
 void FileCopier::startCopy(){
@@ -23,6 +24,7 @@ void FileCopier::startCopy(){
     m_completedFilesCounter = -1;
     m_copiedCounter = 0;
     if(m_threadsCount > numberOfFiles)m_threadsCount = (uint16_t)numberOfFiles;
+    cout<<"Total number of cores: "<<m_threadsCount<<"\n";
     cout<<"Total number of files to copy: "<<numberOfFiles<<"\n";
     cout<<"Total size for all files: "<<m_TotalSize/1024.0/1024.0<<" MByte\n";
     cout<<"Start copy process....\n";
@@ -74,13 +76,53 @@ void FileCopier::startCopy(){
     cout <<"Elapsed time: "<< hour << ":" << min << ":" <<sec <<"\n";
 }
 
-void FileCopier::makeOutFilePath(string &path){
+std::string FileCopier::makeOutFilePath(const string &inPath){
 
-    cout<<"\n***************** path creating *************************\n";
-    if(!path.empty())return;//EXCEPTION 3
-    path.replace(0,m_inDir.size(),m_outDir);
-    std::cout<<path<<std::endl;
+    if(inPath.empty())return inPath;
 
+    std::cout<<inPath<<std::endl;
+    std::string pathSignsPositions = "_";
+    std::string trimmedString = "";
+    for(int i=0;i<inPath.size();++i){
+        if(inPath[i] == '/' || inPath[i] == '\\' || inPath[i] == ':'){
+
+            pathSignsPositions = pathSignsPositions + std::to_string(i)+"-";
+        }else{
+
+            trimmedString.append(1,inPath[i]);
+        }
+    }
+    pathSignsPositions.pop_back();
+    pathSignsPositions.append("_");
+    string result = m_outDir + "/" + trimmedString + pathSignsPositions + getCurrentTimeStamp() + ".ens";
+    std::cout<<result<<"\n";
+    return result;
+
+}
+
+string FileCopier::getCurrentTimeStamp()
+{
+
+    struct tm newtime;
+    time_t now = time(0);
+    localtime_s(&newtime,&now);
+
+    std::string timeStamp;
+    timeStamp.append(std::to_string(1900 + newtime.tm_year));
+    timeStamp.append("-");
+    timeStamp.append(std::to_string(newtime.tm_mon));
+    timeStamp.append("-");
+    timeStamp.append(std::to_string(newtime.tm_mday));
+    timeStamp.append("-");
+    timeStamp.append(std::to_string(newtime.tm_hour));
+    timeStamp.append("-");
+    timeStamp.append(std::to_string(newtime.tm_min));
+    timeStamp.append("-");
+    timeStamp.append(std::to_string(newtime.tm_sec));
+
+
+
+    return timeStamp;
 };
 
 void FileCopier::makeBackupNames(){
@@ -92,10 +134,8 @@ void FileCopier::makeBackupNames(){
 
             string sourceFile = file.path().string();
             string backUpFile = sourceFile;
-            makeOutFilePath(backUpFile);
-
             m_TotalSize += fs::file_size(sourceFile);
-            m_paths.push_back(std::make_pair(sourceFile,backUpFile));
+            m_paths.push_back(std::make_pair(sourceFile, makeOutFilePath(backUpFile)));
 
         }
     }
