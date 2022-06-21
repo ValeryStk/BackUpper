@@ -1,22 +1,19 @@
 #include <iostream>
 #include "Core/Controller.h"
 #include "FileSystem/FileManager.h"
+#include "FileSystem/FileWatcher/FileWatcher.h"
 
 
 using std::cout;
 
 int main(){
 	
-	cout<<("Entry point\n");
-	Controller core;
-    FileManager fileManager;
+
     char i;
-    bool isRun = true;
-    core.startTimeManager();
 	cout<<("\nEnter 'q' to exit...");
-    while (isRun) {
+    while (1) {
         std::cin >> i;
-        if (i == 'q')isRun = false;
+        if (i == 'q')break;
     }
 	return 0;
 	

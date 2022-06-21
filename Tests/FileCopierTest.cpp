@@ -2,6 +2,7 @@
 #include "Core/Configurator/Configurator.h"
 #include "FileSystem/FileManager.h"
 #include "FileSystem/FileCopier/FileCopier.h"
+#include "FileSystem/FileNameUtil/FileNameUtil.h"
 #include "gtest/gtest.h"
 #include <filesystem>
 #include <fstream>
@@ -40,11 +41,13 @@ TEST(FileCopier, copyTest){
 
 TEST(FileCopier, makeOutFilePath){
 
-    FileCopier fc("d:/_in","d:/_out");
+    const string inDir = "d:/_in";
+    const string outDir = "d:/_out";
+    FileCopier fc(inDir,outDir);
     string path = "d:/_in/test/test2/test3";
     string expectedResult = "d:/_out/d_intesttest2test3";
-    cout<<fc.makeOutFilePath(path)<<"  ++++   "<<expectedResult;
-    string clearedFileName = fc.makeOutFilePath(path).substr(0,expectedResult.length());
+    cout<<FileNameUtil::makeBackUpName(path,outDir)<<"  ++++   "<<expectedResult;
+    string clearedFileName = FileNameUtil::makeBackUpName(path,outDir).substr(0,expectedResult.length());
     
     EXPECT_EQ(clearedFileName,expectedResult);
 }

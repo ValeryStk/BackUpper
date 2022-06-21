@@ -3,6 +3,5 @@
 
 FileManager::FileManager()
 {
-  //FileCopier fc("d:\\_in","d:\\_out");
 
 }

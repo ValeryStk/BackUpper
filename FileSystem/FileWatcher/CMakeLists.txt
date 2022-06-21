@@ -1,7 +1,7 @@
 project(FileWatcher)
 
 set(SOURCE_FILES "FileWatcher.cpp")
-set(HEADER_FILES "FileWatcher.h")
+set(HEADER_FILES "FileWatcher.h" "FileStates.h")
 
 add_library(FileWatcherLib ${SOURCE_FILES} ${HEADER_FILES})
 

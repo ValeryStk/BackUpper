@@ -1,4 +1,5 @@
 #include "FileCopier.h"
+#include "FileNameUtil.h"
 #include <ctime>
 using std::thread;
 using std::ios;
@@ -13,7 +14,6 @@ FileCopier::FileCopier(string sourceDir, string backupDir)
     m_inDir = sourceDir;
     m_outDir = backupDir;
     m_threadsCount = thread::hardware_concurrency();
-
 }
 
 void FileCopier::startCopy(){
@@ -76,54 +76,6 @@ void FileCopier::startCopy(){
     cout <<"Elapsed time: "<< hour << ":" << min << ":" <<sec <<"\n";
 }
 
-std::string FileCopier::makeOutFilePath(const string &inPath){
-
-    if(inPath.empty())return inPath;
-
-    std::cout<<inPath<<std::endl;
-    std::string pathSignsPositions = "_";
-    std::string trimmedString = "";
-    for(int i=0;i<inPath.size();++i){
-        if(inPath[i] == '/' || inPath[i] == '\\' || inPath[i] == ':'){
-
-            pathSignsPositions = pathSignsPositions + std::to_string(i)+"-";
-        }else{
-
-            trimmedString.append(1,inPath[i]);
-        }
-    }
-    pathSignsPositions.pop_back();
-    pathSignsPositions.append("_");
-    string result = m_outDir + "/" + trimmedString + pathSignsPositions + getCurrentTimeStamp() + ".ens";
-    std::cout<<result<<"\n";
-    return result;
-
-}
-
-string FileCopier::getCurrentTimeStamp()
-{
-
-    struct tm newtime;
-    time_t now = time(0);
-    localtime_s(&newtime,&now);
-
-    std::string timeStamp;
-    timeStamp.append(std::to_string(1900 + newtime.tm_year));
-    timeStamp.append("-");
-    timeStamp.append(std::to_string(newtime.tm_mon));
-    timeStamp.append("-");
-    timeStamp.append(std::to_string(newtime.tm_mday));
-    timeStamp.append("-");
-    timeStamp.append(std::to_string(newtime.tm_hour));
-    timeStamp.append("-");
-    timeStamp.append(std::to_string(newtime.tm_min));
-    timeStamp.append("-");
-    timeStamp.append(std::to_string(newtime.tm_sec));
-
-
-
-    return timeStamp;
-};
 
 void FileCopier::makeBackupNames(){
 
@@ -134,7 +86,8 @@ void FileCopier::makeBackupNames(){
             string sourceFile = file.path().string();
             string backUpFile = sourceFile;
             m_TotalSize += fs::file_size(sourceFile);
-            m_paths.push_back(std::make_pair(sourceFile, makeOutFilePath(backUpFile)));
+            string outFilePath = FileNameUtil::makeBackUpName(backUpFile,m_outDir);
+            m_paths.push_back(std::make_pair(sourceFile, outFilePath));
 
         }
     }

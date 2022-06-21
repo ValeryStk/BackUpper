@@ -24,7 +24,6 @@ class FileCopier{
 public:
     FileCopier(std::string sourceDir,std::string backupDir);
     void startCopy();
-    std::string makeOutFilePath(const string &inPath);
 
 private:
     string   m_inDir;
@@ -36,7 +35,6 @@ private:
     atomic <uint64_t> m_TotalSize;
     vector <pair<string,string>> m_paths;
 
-    string getCurrentTimeStamp();
     void makeBackupNames();
 
 };
