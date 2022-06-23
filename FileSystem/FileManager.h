@@ -7,4 +7,4 @@ public:
 
 };
 
-#endif //FILECOPIER_H
+#endif //FILEMANAGER_H

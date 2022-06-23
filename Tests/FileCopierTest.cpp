@@ -33,7 +33,7 @@ TEST(FileCopier, copyTest){
     string out = (fs::current_path()/testOutFolderName).string();
     if(fs::exists(out))fs::remove_all(out);
     fs::create_directory(out);
-    FileCopier fc(in,out);
+    FileCopier fc(in,out,1);
     fc.startCopy();
     uint16_t numberFiles = getNumberOfFilesInFolder(out);
     EXPECT_EQ(numberTestFiles,numberFiles);
@@ -43,22 +43,31 @@ TEST(FileCopier, makeOutFilePath){
 
     const string inDir = "d:/_in";
     const string outDir = "d:/_out";
-    FileCopier fc(inDir,outDir);
+    FileCopier fc(inDir,outDir,1);
     string path = "d:/_in/test/test2/test3";
     string expectedResult = "d:/_out/d_intesttest2test3";
-    cout<<FileNameUtil::makeBackUpName(path,outDir)<<"  ++++   "<<expectedResult;
-    string clearedFileName = FileNameUtil::makeBackUpName(path,outDir).substr(0,expectedResult.length());
+    cout<<FileNameUtil::makeBackUpName(path,outDir,1)<<"  ++++   "<<expectedResult;
+    string clearedFileName = FileNameUtil::makeBackUpName(path,outDir,1).substr(0,expectedResult.length());
     
     EXPECT_EQ(clearedFileName,expectedResult);
 }
 
+TEST(FileNameUtil, restoreInfoFromBackupFileName){
+
+    string bun = "D_!TestInFoldertestFileNameExample_1.txt_1-2-17_2022-5-22-21-15-11_1";
+    auto fi = FileNameUtil::getOriginPathFromBackupName(bun);
+    cout<<"version: "<<fi.version<<"\n";
+    cout<<"dateTime: "<<fi.dateTime<<"\n";
+    cout<<"path: "<<fi.path<<"\n";
+}
+
 int main(int argc, char* argv[]){
 
-	::testing::InitGoogleTest(&argc, argv);
+    ::testing::InitGoogleTest(&argc, argv);
     RUN_ALL_TESTS();
     char exit;
     std::cin >> exit;
-	return 0;
+    return 0;
 }
 
 void makeFilesInCurrentFolder(uint16_t filesNumber){
@@ -69,22 +78,22 @@ void makeFilesInCurrentFolder(uint16_t filesNumber){
     if(isDirExists) fs::remove_all(testFolderPath);
     fs::create_directory(testFolderPath);
     for(int i=0;i<filesNumber;++i){
-    std::string fileName = testFileName + std::to_string(i + 1) + ".txt";
-    std::ofstream file(testFolderPath/fileName);
-    file <<"Test text";
+        std::string fileName = testFileName + std::to_string(i + 1) + ".txt";
+        std::ofstream file(testFolderPath/fileName);
+        file <<"Test text";
     }
 
 };
 
 uint16_t getNumberOfFilesInFolder(string pathFolder){
-uint16_t fileCounter = 0;
+    uint16_t fileCounter = 0;
     for(auto &file : fs::recursive_directory_iterator(pathFolder)) {
 
-    if(!file.is_directory()){
-     ++fileCounter;
+        if(!file.is_directory()){
+            ++fileCounter;
+        }
     }
-}
-return fileCounter;
+    return fileCounter;
 };
 
 

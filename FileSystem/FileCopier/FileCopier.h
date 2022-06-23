@@ -22,12 +22,13 @@ using std::mutex;
 
 class FileCopier{
 public:
-    FileCopier(std::string sourceDir,std::string backupDir);
+    FileCopier(std::string sourceDir, std::string backupDir, uint32_t version);
     void startCopy();
 
 private:
     string   m_inDir;
     string   m_outDir;
+    uint32_t m_version;
     uint16_t m_threadsCount = 1;
     mutex    m_copyFinishMutex;
     atomic <uint64_t> m_completedFilesCounter = -1;
@@ -35,7 +36,7 @@ private:
     atomic <uint64_t> m_TotalSize;
     vector <pair<string,string>> m_paths;
 
-    void makeBackupNames();
+    void makeBackupNames(uint32_t version);
 
 };
 

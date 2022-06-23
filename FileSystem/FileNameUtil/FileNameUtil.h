@@ -4,11 +4,21 @@
 
 using std::string;
 
+struct fileInfo{
+
+    string path;
+    string fileName;
+    string dateTime;
+    uint32_t version;
+
+};
+
+
 class FileNameUtil{
 public:
-    static string makeBackUpName(const string &inPath, const string &outDir);
+    static string makeBackUpName(const string &inPath, const string &outDir, const uint32_t &version);
     static string getCurrentTimeStamp();
-    static string getOriginPathFromBackupName(const string &backupName);
+    static fileInfo getOriginPathFromBackupName(const string &backupName);
 private:
     FileNameUtil() = delete;
    ~FileNameUtil() = delete;

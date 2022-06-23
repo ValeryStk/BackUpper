@@ -9,17 +9,18 @@ using std::ostream;
 namespace fs = std::filesystem;
 using namespace std::chrono;
 
-FileCopier::FileCopier(string sourceDir, string backupDir)
+FileCopier::FileCopier(string sourceDir, string backupDir, uint32_t version)
 {
     m_inDir = sourceDir;
     m_outDir = backupDir;
+    m_version = version;
     m_threadsCount = thread::hardware_concurrency();
 }
 
 void FileCopier::startCopy(){
 
     vector<std::pair<string, string> > pathes;
-    makeBackupNames();
+    makeBackupNames(m_version);
     const uint64_t numberOfFiles = m_paths.size();
     m_completedFilesCounter = -1;
     m_copiedCounter = 0;
@@ -77,7 +78,7 @@ void FileCopier::startCopy(){
 }
 
 
-void FileCopier::makeBackupNames(){
+void FileCopier::makeBackupNames(uint32_t version){
 
     for(auto &file : fs::recursive_directory_iterator(m_inDir)) {
 
@@ -86,7 +87,7 @@ void FileCopier::makeBackupNames(){
             string sourceFile = file.path().string();
             string backUpFile = sourceFile;
             m_TotalSize += fs::file_size(sourceFile);
-            string outFilePath = FileNameUtil::makeBackUpName(backUpFile,m_outDir);
+            string outFilePath = FileNameUtil::makeBackUpName(backUpFile,m_outDir,version);
             m_paths.push_back(std::make_pair(sourceFile, outFilePath));
 
         }
