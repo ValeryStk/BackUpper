@@ -9,9 +9,10 @@ string FileNameUtil::makeBackUpName(const string &inPath, const string &outDir, 
     if(inPath.empty())return inPath;
     string pathSignsPositions = "_";
     string trimmedString = "";
+    trimmedString.append(1,inPath[0]);//Disk Letter
 
-    for(int i=0;i<inPath.size();++i){
-        if(inPath[i] == '/' || inPath[i] == '\\' || inPath[i] == ':'){
+    for(int i=3;i<inPath.size();++i){//Start with 3 because second and third positions are always the same
+        if(inPath[i] == '/' || inPath[i] == '\\' ){
 
             pathSignsPositions = pathSignsPositions + std::to_string(i)+"-";
 
@@ -21,6 +22,7 @@ string FileNameUtil::makeBackUpName(const string &inPath, const string &outDir, 
         }
     }
     pathSignsPositions.pop_back();
+    pathSignsPositions.append("_");
     string versionStr = "_";
     versionStr.append(std::to_string(version));
     string result = outDir + "/" + trimmedString + pathSignsPositions + getCurrentTimeStamp() + versionStr;
@@ -87,11 +89,12 @@ fileInfo FileNameUtil::getOriginPathFromBackupName(const string &backupName)
         positions.push_back(position);
         slashesString.erase(0, pos + splitter.length());
     }
-    positions.push_back(std::stoi(slashesString));
+    if(!slashesString.empty()) positions.push_back(std::stoi(slashesString));
 
 
-    pathWithoutSlashes.insert(positions[0],":");
-    for(int i=1;i<positions.size();++i){
+    pathWithoutSlashes.insert(1,":");
+    pathWithoutSlashes.insert(2,"/");
+    for(int i=0;i<positions.size();++i){
         pathWithoutSlashes.insert(positions[i],"/");
     };
 

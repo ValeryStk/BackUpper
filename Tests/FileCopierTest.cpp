@@ -48,17 +48,19 @@ TEST(FileCopier, makeOutFilePath){
     string expectedResult = "d:/_out/d_intesttest2test3";
     cout<<FileNameUtil::makeBackUpName(path,outDir,1)<<"  ++++   "<<expectedResult;
     string clearedFileName = FileNameUtil::makeBackUpName(path,outDir,1).substr(0,expectedResult.length());
-    
+    cout<<"Cleared file name: "<<clearedFileName;
     EXPECT_EQ(clearedFileName,expectedResult);
 }
 
 TEST(FileNameUtil, restoreInfoFromBackupFileName){
 
-    string bun = "D_!TestInFoldertestFileNameExample_1.txt_1-2-17_2022-5-22-21-15-11_1";
+    string bun = "D_!TestInFoldertestFileNameExample_1.txt_17_2022-5-22-21-15-11_1";
     auto fi = FileNameUtil::getOriginPathFromBackupName(bun);
     cout<<"version: "<<fi.version<<"\n";
     cout<<"dateTime: "<<fi.dateTime<<"\n";
     cout<<"path: "<<fi.path<<"\n";
+    EXPECT_EQ(fi.version,1);
+    EXPECT_EQ(fi.path,"D:/_!TestInFolder/testFileNameExample_1.txt");
 }
 
 int main(int argc, char* argv[]){
