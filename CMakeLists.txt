@@ -11,19 +11,10 @@ add_subdirectory(DataBase)
 add_subdirectory(FileSystem)
 add_subdirectory(GUI)
 add_subdirectory(MessageBroker)
+
+# tests
+enable_testing()
 add_subdirectory(Tests)
-
-add_executable (Test Tests/Test.cpp)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-target_include_directories(
-Test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
-)
-
-target_link_libraries(Test PRIVATE gtest_main)
-target_link_libraries(Test PRIVATE CoreLib)
-target_link_libraries(Test PRIVATE ConfiguratorLib)
-target_link_libraries(Test PRIVATE FileManagerLib)
 
 add_executable       (${projectName} main.cpp)
 target_link_libraries(${projectName} PRIVATE CoreLib)
